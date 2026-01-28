@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Container, Box, Typography, Button, Stack } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';

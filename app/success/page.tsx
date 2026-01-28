@@ -1,13 +1,13 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Container, Box, Typography, Paper, Stack, Button, Divider } from '@mui/material';
-import { CheckCircle, ArrowBack, Dashboard, Refresh } from '@mui/icons-material';
-import Link from 'next/link';
+import { Container, Box, Typography, Paper, Stack, Button, Divider, CircularProgress } from '@mui/material';
+import { CheckCircle, Dashboard, Refresh } from '@mui/icons-material';
 import MainLayout from '@/app/components/Layout/MainLayout';
 import { useFormData, useWizardStore } from '@/app/store/wizardStore';
 
-export default function SuccessPage() {
+function SuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const workspaceSlug = searchParams.get('workspace');
@@ -89,14 +89,22 @@ export default function SuccessPage() {
               variant="outlined"
               startIcon={<Refresh />}
               onClick={handleRestart}
-              fullWidth={{ xs: true, sm: false }}
+              fullWidth
+              sx={{ 
+                width: { xs: '100%', sm: 'auto' },
+                minWidth: { sm: 200 }
+              }}
             >
               Create New Workspace
             </Button>
             <Button
               variant="contained"
               startIcon={<Dashboard />}
-              fullWidth={{ xs: true, sm: false }}
+              fullWidth
+              sx={{ 
+                width: { xs: '100%', sm: 'auto' },
+                minWidth: { sm: 200 }
+              }}
               onClick={() => {
                 // In a real app, this would navigate to the workspace dashboard
                 alert('This would navigate to your workspace dashboard!');
@@ -108,5 +116,21 @@ export default function SuccessPage() {
         </Paper>
       </Container>
     </MainLayout>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <MainLayout>
+          <Container maxWidth="md" sx={{ py: { xs: 3, sm: 5 }, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+            <CircularProgress />
+          </Container>
+        </MainLayout>
+      }
+    >
+      <SuccessContent />
+    </Suspense>
   );
 }
